@@ -19,6 +19,8 @@ type Mutation {
 
 type Subscription {
     somethingChanged:Int!
+    comment(postId:ID!):Comment!
+    post:Post!
 }
 
 input UpdatePostInput {

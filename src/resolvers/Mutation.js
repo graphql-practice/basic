@@ -52,7 +52,7 @@ const Mutation = {
         }
         return user
     },
-    creatPost(parent,args,{db},info){
+    creatPost(parent,args,{db,pubsub},info){
         const {data} = args
         const authorToken = db.users.some(user => user.id === data.author)
         if(!authorToken){
@@ -63,6 +63,11 @@ const Mutation = {
             ...data
         }
         db.posts.push(post)
+        if(data.published){
+            pubsub.publish("post",{
+                post
+            })
+        }
         return post
     },
     deletePost(parent,args,{db},info){
@@ -92,7 +97,7 @@ const Mutation = {
         }
         return post
     },
-    creatComment(parent,args,{db},info){
+    creatComment(parent,args,{db,pubsub},info){
         const {data} = args
         const authorExit = db.users.some(user => user.id === data.author)
         const postExit = db.posts.some(po => po.id === data.post && po.published)
@@ -106,6 +111,7 @@ const Mutation = {
             ...data
         }
         db.comments.push(comment)
+        pubsub.publish(`comment ${data.post}`,{comment})
         return comment
     },
     deleteComment(parent,args,{db},info){
