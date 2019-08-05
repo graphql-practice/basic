@@ -51,42 +51,42 @@ let posts = [{
     author:'4'
 }]
 let comments = [{
-    id:101,
+    id:"101",
     text:'text101',
     author:'1',
     post:'1'
 },{
-    id:102,
+    id:"102",
     text:'text102',
     author:'3',
     post:'2'
 },{
-    id:103,
+    id:"103",
     text:'text103',
     author:'2',
     post:'3'
 },{
-    id:104,
+    id:"104",
     text:'text104',
     author:'1',
     post:'4'
 },{
-    id:105,
+    id:"105",
     text:'text105',
     author:'2',
     post:'5'
 },{
-    id:106,
+    id:"106",
     text:'text106',
     author:'2',
     post:'1'
 },{
-    id:107,
+    id:"107",
     text:'text107',
     author:'3',
     post:'4'
 },{
-    id:108,
+    id:"108",
     text:'text108',
     author:'1',
     post:'3'
@@ -103,6 +103,7 @@ const typeDefs = `
         creatUser(data:CreateUserInput!):User!
         deleteUser(id:ID!):User!
         deletePost(id:ID!):Post!
+        deleteComment(id:ID!):Comment!
         creatPost(data:CreatePostInput!):Post!
         creatComment(data:CreateComment):Comment!
     }
@@ -246,7 +247,7 @@ const resolvers = {
         },
         deletePost(parent,args,ctx,info){
             const {id} = args
-            const post = posts.find(p=>p.id = id)
+            const post = posts.find(p=>p.id === id)
             if(!post){
                 throw new Error('文章不存在')
             }
@@ -268,6 +269,15 @@ const resolvers = {
                 ...data
             }
             comments.push(comment)
+            return comment
+        },
+        deleteComment(parent,args,ctx,info){
+            const {id} = args
+            const comment = comments.find(com => com.id === id)
+            if(!comment){
+                throw new Error("评论不存在")
+            }
+            comments = comments.filter(com => com.id !== id)
             return comment
         }
     },
