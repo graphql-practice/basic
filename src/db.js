@@ -1,0 +1,102 @@
+let users = [{
+    id:'1',
+    name:'Tom1',
+    email:'Tom1@gmail.com',
+    english:97.3
+},{
+    id:'2',
+    name:'jack',
+    email:'jack@gmail.com',
+    english:97.3
+},{
+    id:'3',
+    name:'Jack',
+    email:'Jack@gmail.com',
+    english:97.3
+},{
+    id:'4',
+    name:'Jonh',
+    email:'Jonh@gmail.com',
+    english:97.3
+}]
+
+let posts = [{
+    id:'1',
+    title:'123',
+    body:'aaaa',
+    published:true,
+    author:'1'
+},{
+    id:'2',
+    title:'345',
+    body:'bbbb',
+    published:false,
+    author:'2'
+},{
+    id:'3',
+    title:'456',
+    body:'cccd',
+    published:true,
+    author:'3'
+},{
+    id:'4',
+    title:'567',
+    body:'dddb',
+    published:false,
+    author:'1'
+},{
+    id:'5',
+    title:'789',
+    body:'ffff',
+    published:true,
+    author:'4'
+}]
+let comments = [{
+    id:"101",
+    text:'text101',
+    author:'1',
+    post:'1'
+},{
+    id:"102",
+    text:'text102',
+    author:'3',
+    post:'2'
+},{
+    id:"103",
+    text:'text103',
+    author:'2',
+    post:'3'
+},{
+    id:"104",
+    text:'text104',
+    author:'1',
+    post:'4'
+},{
+    id:"105",
+    text:'text105',
+    author:'2',
+    post:'5'
+},{
+    id:"106",
+    text:'text106',
+    author:'2',
+    post:'1'
+},{
+    id:"107",
+    text:'text107',
+    author:'3',
+    post:'4'
+},{
+    id:"108",
+    text:'text108',
+    author:'1',
+    post:'3'
+}]
+
+const db = {
+    users,
+    posts,
+    comments
+}
+
+export {db}
