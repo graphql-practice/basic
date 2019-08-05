@@ -17,6 +17,10 @@ type Mutation {
   updateComment(id:ID!,data:UpdateCommentInput!):Comment!
 }
 
+type Subscription {
+    somethingChanged:Int!
+}
+
 input UpdatePostInput {
   title: String!
   body: String!
