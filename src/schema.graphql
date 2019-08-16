@@ -20,7 +20,7 @@ type Mutation {
 type Subscription {
     somethingChanged:Int!
     comment(postId:ID!):Comment!
-    post:Post!
+    post:postSubscriptionPayload!
 }
 
 input UpdatePostInput {
@@ -83,4 +83,8 @@ type Comment {
   text: String!
   author: User!
   post: Post!
+}
+type postSubscriptionPayload{
+  mutation:String!
+  data:Post!
 }

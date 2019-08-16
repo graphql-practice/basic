@@ -64,13 +64,17 @@ const Mutation = {
         }
         db.posts.push(post)
         if(data.published){
+            console.log(111)
             pubsub.publish("post",{
-                post
+                post:{
+                    mutation:"CREATED",
+                    data:post
+                }
             })
         }
         return post
     },
-    deletePost(parent,args,{db},info){
+    deletePost(parent,args,{db,pubsub},info){
         const {id} = args
         const post = db.posts.find(p=>p.id === id)
         if(!post){
@@ -78,11 +82,20 @@ const Mutation = {
         }
         db.posts = db.posts.filter(p => p.id !==id)
         db.comments = db.comments.filter(c => c.post !==id)
+        if(post.published){
+            pubsub.publish("post",{
+                post:{
+                    mutation:"DELETED",
+                    data:post
+                }
+            })
+        }
         return post
     },
-    updatePost(parent,args,{db},info){
+    updatePost(parent,args,{db,pubsub},info){
         const {id, data} = args
         const post = db.posts.find(po => po.id === id)
+        const oldPost = JSON.parse(JSON.stringify(post))
         if(!post){
             throw new Error('文章不存在')
         }
@@ -92,8 +105,42 @@ const Mutation = {
         if(typeof data.body ==="string"){
             post.body = data.body
         }
+
+        const updated = (post)=>{
+            pubsub.publish("post",{
+                post:{
+                    mutation:"UPDATED",
+                    data:post
+                }
+            })
+        }
+
         if(typeof data.published === "boolean"){
             post.published = data.published
+            console.log(oldPost.published , post.published)
+            if(!oldPost.published && post.published){ //published  false -> true  created
+                pubsub.publish("post",{
+                    post:{
+                        mutation:"CREATED",
+                        data:post
+                    }
+                })
+            }
+
+            if(oldPost.published && !post.published){ //published  true -> false  DELETED
+                pubsub.publish("post",{
+                    post:{
+                        mutation:"DELETED",
+                        data:post
+                    }
+                })
+            }
+
+            if(oldPost.published && post.published){
+                updated(post)
+            }
+        }else if(post.published){
+            updated(post)
         }
         return post
     },
