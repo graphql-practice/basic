@@ -6,6 +6,11 @@
   "scripts": {
     "start": "nodemon src/index.js --ext js,json,graphql --exec babel-node"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:graphql-practice/basic.git"
+  },
+  "description": "graphQl的基础练习",
   "dependencies": {
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -15,5 +20,9 @@
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
+  },
+  "peerDependencies": {
+    "aws-lambda": ">=0.1.2",
+    "graphql": ">=0.11.0"
   }
 }

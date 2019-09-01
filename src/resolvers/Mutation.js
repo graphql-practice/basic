@@ -158,19 +158,26 @@ const Mutation = {
             ...data
         }
         db.comments.push(comment)
-        pubsub.publish(`comment ${data.post}`,{comment})
+        pubsub.publish(`comment ${data.post}`,{comment:{
+            mutation:"CREATED",
+            data:comment
+        }})
         return comment
     },
-    deleteComment(parent,args,{db},info){
+    deleteComment(parent,args,{db,pubsub},info){
         const {id} = args
         const comment = db.comments.find(com => com.id === id)
         if(!comment){
             throw new Error("评论不存在")
         }
         db.comments = db.comments.filter(com => com.id !== id)
+        pubsub.publish(`comment ${comment.post}`,{comment:{
+            mutation:"DELETEDD",
+            data:comment
+        }})
         return comment
     },
-    updateComment(parent,args,{db},info){
+    updateComment(parent,args,{db,pubsub},info){
         const {id, data} = args
         const comment = db.comments.find(com => com.id === id)
         if(!comment){
@@ -179,6 +186,11 @@ const Mutation = {
         if(typeof data.text === "string"){
             comment.text = data.text
         }
+        console.log(comment.post)
+        pubsub.publish(`comment ${comment.post}`,{comment:{
+            mutation:"UPDATED",
+            data:comment
+        }})
         return comment
     }
 }
